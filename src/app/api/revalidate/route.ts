@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
         return Response.json({ error: 'query parameter is required' }, { status: 400 })
     }
 
-    const correctSlug = data.full_slug === 'home' ? '/' : data.full_slug
+    const correctSlug = data.full_slug === 'home' ? '/' : `/${data.full_slug}`
 
     revalidateTag(tag)
     revalidatePath(correctSlug)

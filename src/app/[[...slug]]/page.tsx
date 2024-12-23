@@ -9,7 +9,9 @@ const fetchStory = async (slug?: string[]) => {
   const sbParams: ISbStoriesParams = { version: process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION };
   const storyblokApi: StoryblokClient = getStoryblokApi();
 
-  return storyblokApi.get(`cdn/stories/${slug ? slug.join('/') : 'home'}`, sbParams, { next: { tags: ['cms'], revalidate: process.env.NODE_ENV === 'production' ? 3600 : 0 }, });
+  
+
+  return storyblokApi.get(`cdn/stories/${slug ? slug.join('/') : 'home'}`, sbParams, { next: {  revalidate: process.env.NODE_ENV === 'production' ? 3600 : 0 }, });
 }
 
 type Params = Promise<{ slug?: string[] }>;
