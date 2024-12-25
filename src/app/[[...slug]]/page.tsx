@@ -1,13 +1,12 @@
-import { ISbStoriesParams, StoryblokClient } from "@storyblok/react/rsc";
+import { ISbStoriesParams, StoryblokClient, StoryblokStory } from "@storyblok/react/rsc";
 import { getStoryblokApi } from "@/lib/storyblok";
-import StoryBlokRenderer from "@/components/StoryBlokRenderer";
 
 export async function generateStaticParams() {
   return [];
 }
 
 const fetchStory = async (slug?: string[]) => {
-  const sbParams: ISbStoriesParams = { version: process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION };
+  const sbParams: ISbStoriesParams = { version: 'published' };
   const storyblokApi: StoryblokClient = getStoryblokApi();
 
   return storyblokApi.get(
@@ -29,6 +28,6 @@ export default async function Home({ params }: { params: Params }) {
   const pageData = await fetchStory(slug);
 
   return (
-    <StoryBlokRenderer serverSideStory={pageData} slug={slug} />
+    <StoryblokStory story={pageData.data.story} />
   );
 }
