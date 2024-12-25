@@ -1,6 +1,6 @@
 import { ISbStoriesParams, StoryblokClient, StoryblokStory } from "@storyblok/react/rsc";
 import { getStoryblokApi } from "@/lib/storyblok";
-// import { useEffect, useState } from "react";
+import { useStoryBlokPreviewData } from "@/hooks/useStoryBlokPreviewData";
 
 export async function generateStaticParams() {
   return [];
@@ -14,7 +14,7 @@ const fetchStory = async (slug?: string[]) => {
     `cdn/stories/${slug ? slug.join('/') : 'home'}`,
     sbParams,
     {
-      cache: process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION === 'draft' ? 'no-store' : 'force-cache',
+      cache: 'force-cache',
       next: {
         tags: ['cms']
       }
@@ -24,29 +24,16 @@ const fetchStory = async (slug?: string[]) => {
 type Params = Promise<{ slug?: string[] }>;
 
 export default async function Home({ params }: { params: Params }) {
-  const pageData = await fetchStory((await params).slug);
-  // const [previewPageData, setPreviewPageData] = useState<null | ISbResult>(null);
+  const slug = (await params).slug;
 
-  // const fetchPreviewData = async () => {
-  //   const previewData = await fetchStory((await params).slug);
-  //   setPreviewPageData(previewData);
-  // }
+  const pageData = await fetchStory(slug);
+  const previewPageData = useStoryBlokPreviewData(slug)
 
-  // useEffect(() => {
-  //   if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION === 'draft') {
-  //     fetchPreviewData();
-  //   }
-  // }, [])
+  if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION === 'draft' && !previewPageData) {
+    return <div>Loading...</div>
+  }
 
-  // if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION === 'draft' && previewPageData) {
-  //   return (
-  //     <StoryblokStory story={previewPageData.data.story} />
-  //   );
-  // }
-
-  // if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION !== 'draft') {
   return (
-    <StoryblokStory story={pageData.data.story} />
+    <StoryblokStory story={previewPageData?.data.story || pageData.data.story} />
   );
-  // }
 }
