@@ -1,16 +1,12 @@
-import { ISbStoriesParams, StoryblokClient, StoryblokStory } from "@storyblok/react/rsc";
-import { getStoryblokApi } from "@/lib/storyblok";
+import { StoryblokStory } from "@storyblok/react/rsc";
 
 const fetchStory = async (slug?: string[]) => {
-    const sbParams: ISbStoriesParams = { version: 'draft' };
-    const storyblokApi: StoryblokClient = getStoryblokApi();
+    const correctSlug = `/${slug ? slug.join('/') : 'home'}`
 
-    return storyblokApi.get(
-        `cdn/stories/${slug ? slug.join('/') : 'home'}`,
-        sbParams,
-        {
-            cache: 'no-store',
-        });
+    return fetch(`
+        https://api.storyblok.com/v2/cdn/stories${correctSlug}?version=draft&token=${process.env.NEXT_PUBLIC_STORYBLOK_TOKEN}`,
+        { next: { revalidate: 0 } }
+    ).then((res) => res.json())
 }
 
 type Params = Promise<{ slug?: string[] }>;
