@@ -1,6 +1,6 @@
-import { ISbStoriesParams, StoryblokClient, StoryblokStory } from "@storyblok/react/rsc";
+import { ISbStoriesParams, StoryblokClient } from "@storyblok/react/rsc";
 import { getStoryblokApi } from "@/lib/storyblok";
-import { useStoryBlokPreviewData } from "@/hooks/useStoryBlokPreviewData";
+import StoryBlokRenderer from "@/components/StoryBlokRenderer";
 
 export async function generateStaticParams() {
   return [];
@@ -27,13 +27,8 @@ export default async function Home({ params }: { params: Params }) {
   const slug = (await params).slug;
 
   const pageData = await fetchStory(slug);
-  const previewPageData = useStoryBlokPreviewData(slug)
-
-  if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION === 'draft' && !previewPageData) {
-    return <div>Loading...</div>
-  }
 
   return (
-    <StoryblokStory story={previewPageData?.data.story || pageData.data.story} />
+    <StoryBlokRenderer serverSideStory={pageData} slug={slug} />
   );
 }

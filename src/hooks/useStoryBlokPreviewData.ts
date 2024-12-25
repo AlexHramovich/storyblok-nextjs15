@@ -26,7 +26,7 @@ export const useStoryBlokPreviewData = (slug?: string[]) => {
         if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION === 'draft') {
             fetchPreviewData();
         }
-    }, [])
+    })
 
     if (process.env.NEXT_PUBLIC_STORYBLOK_CONTENT_VERSION !== 'draft') {
         return null;
