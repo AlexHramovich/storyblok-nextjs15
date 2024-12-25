@@ -13,7 +13,6 @@ const fetchStory = async (slug?: string[]) => {
     `cdn/stories/${slug ? slug.join('/') : 'home'}`,
     sbParams,
     {
-      cache: 'force-cache',
       next: {
         tags: ['cms']
       }
