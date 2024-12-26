@@ -1,11 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    inlineCss: true
-  },
   images: {
-    domains: ['focusreactive.com']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'focusreactive.com',
+        pathname: '/**',
+      },
+    ],
   }
 };
 
