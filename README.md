@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js 15 + StoryBlok Starter
+
+This repository serves as a starter template for integrating [Next.js 15](https://nextjs.org) with [StoryBlok](https://www.storyblok.com). It includes all the necessary configurations to help you get started with a headless CMS and a static site generator built with the App Router.
+
+### Features
+
+- **Next.js 15** with App Router
+- **StoryBlok** integration
+- **Pages Revalidation API**
+- **StoryBlok Live-Preview** integration
+- **Static Site Generation**
+- **Tailwind CSS** for styling
+- **TypeScript** for type safety
 
 ## Getting Started
 
-First, run the development server:
+> Ensure you have a StoryBlok account and a space with default content. If not, create a free account [here](https://www.storyblok.com).
+
+1. Create a `.env.local` file in the root of the project and add the following environment variable:
+
+    ```bash
+    NEXT_PUBLIC_STORYBLOK_TOKEN=your_storyblok_preview_token
+    ```
+    Replace `your_storyblok_preview_token` with your actual StoryBlok API preview token.
+
+2. Set up a preview domain in your StoryBlok space settings under `Settings > Visual Editor > Location (default environment)`. Change it to:
+
+    ```bash
+    https://localhost:3000/live-preview/
+    ```
+
+3. Run the development server:
+
+    ```bash
+    yarn run dev
+    ```
+
+    Open [https://localhost:3000](https://localhost:3000) in your browser and approve the security exception to enable StoryBlok live preview.
+
+4. Ensure your StoryBlok home page content is correct. **Remove all sections except Teaser and save it**.
+
+5. Click the save button in StoryBlok to see the live preview of your home page.
+
+## Deployment
+
+Create two projects in Vercel: one for preview and one for production. The only difference between them is the environment variable. Ensure the production project uses the **READ token** and the preview project uses the **PREVIEW token** to secure your draft content.
+
+## Revalidation
+
+We have provided a basic revalidation flow. Create a webhook in StoryBlok under `Settings > Webhooks` with the following URL:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+https://your-project.vercel.app/api/revalidate
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Replace `your-project` with your actual Vercel project name.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For a step-by-step setup guide, check our article that will walk you through the entire process.
